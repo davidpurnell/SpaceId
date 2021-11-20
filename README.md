@@ -1,6 +1,6 @@
 # macOS space indicator
 
-This fork primarily exists because I wanted spaces between each monitor group but I've also changed the shape of the icons to reflect the reality that our screens all have wide aspect ratios.
+This fork exists because I wanted spaces between each monitor group but I've also changed the shape of the icons to reflect the reality that of modern wide aspect ratio screens.
 
 ![](https://raw.githubusercontent.com/davidpurnell/SpaceId/master/images/a.png)
 ![](https://raw.githubusercontent.com/davidpurnell/SpaceId/master/images/b.png)
