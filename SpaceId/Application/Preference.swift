@@ -22,11 +22,12 @@ class Preference {
         case whiteOnBlack
         case blackOnWhite
     }
-    
+
     enum App: String {
         case updateOnLeftClick
         case updateOnAppSwitch
         case underlineActiveMonitor
         case launchOnLogin
+        case numberedSpaces
     }
 }

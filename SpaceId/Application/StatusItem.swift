@@ -7,7 +7,7 @@ class StatusItem: NSObject, NSMenuDelegate {
     private let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     private let defaults = UserDefaults.standard
     private let buttonImage = ButtonImage()
-    private var currentSpaceInfo = SpaceInfo(keyboardFocusSpace: nil, activeSpaces: [], allSpaces: [])
+    private var currentSpaceInfo = SpaceInfo(keyboardFocusSpace: nil, activeSpaces: [], allSpaces: [], monitorSpaces: [])
     
     var delegate: ReloadDelegate? = nil
     
@@ -49,10 +49,10 @@ class StatusItem: NSObject, NSMenuDelegate {
         let perSpace = NSMenuItem(title: "Icon Per Space",
                                   action: #selector(iconPerSpace(_:)),
                                   keyEquivalent: "")
-        let fill = NSMenuItem(title: "White on Black",
+        let fill = NSMenuItem(title: "Fill",
                               action: #selector(whiteOnBlack(_:)),
                               keyEquivalent: "")
-        let empty = NSMenuItem(title: "Black on White",
+        let empty = NSMenuItem(title: "Outline",
                                action: #selector(blackOnWhite(_:)),
                                keyEquivalent: "")
         let launchLogin = NSMenuItem(title: "Launch on Login",
@@ -103,11 +103,15 @@ class StatusItem: NSObject, NSMenuDelegate {
         let underlineActiveMonitor = NSMenuItem(title: "Underline Active Monitor",
                                                 action: #selector(underlineActiveMonitor(_:)),
                                                 keyEquivalent: "")
+        let numberedSpaces = NSMenuItem(title: "Numbered Spaces",
+                                                action: #selector(numberedSpaces(_:)),
+                                                keyEquivalent: "")
 
 
         leftClick.target = self
         appSwitch.target = self
         underlineActiveMonitor.target = self
+        numberedSpaces.target = self
         
         leftClick.state = defaults.bool(forKey: Preference.App.updateOnLeftClick.rawValue) ?
             NSControl.StateValue.on : NSControl.StateValue.off
@@ -115,12 +119,15 @@ class StatusItem: NSObject, NSMenuDelegate {
             NSControl.StateValue.on : NSControl.StateValue.off
         underlineActiveMonitor.state = defaults.bool(forKey: Preference.App.underlineActiveMonitor.rawValue) ?
             NSControl.StateValue.on : NSControl.StateValue.off
-        
-        menu.addItem(NSMenuItem(title: "Enhance Multi Monitor Support", action: nil, keyEquivalent: ""))
+        numberedSpaces.state = defaults.bool(forKey: Preference.App.numberedSpaces.rawValue) ?
+            NSControl.StateValue.on : NSControl.StateValue.off
+
+        menu.addItem(NSMenuItem(title: "Enhanced Multi Monitor Support", action: nil, keyEquivalent: ""))
         menu.addItem(NSMenuItem.separator())
         menu.addItem(leftClick)
         menu.addItem(appSwitch)
         menu.addItem(underlineActiveMonitor)
+        menu.addItem(numberedSpaces)
         return menu
     }
     
@@ -169,6 +176,12 @@ class StatusItem: NSObject, NSMenuDelegate {
     @objc func underlineActiveMonitor(_ sender: NSMenuItem) {
         let b = defaults.bool(forKey: Preference.App.underlineActiveMonitor.rawValue)
         defaults.set(!b, forKey: Preference.App.underlineActiveMonitor.rawValue)
+        delegate?.reload()
+    }
+    
+    @objc func numberedSpaces(_ sender: NSMenuItem) {
+        let b = defaults.bool(forKey: Preference.App.numberedSpaces.rawValue)
+        defaults.set(!b, forKey: Preference.App.numberedSpaces.rawValue)
         delegate?.reload()
     }
     

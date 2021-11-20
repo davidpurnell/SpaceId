@@ -14,22 +14,24 @@ class SpaceIdentifier {
         guard let monitors = CGSCopyManagedDisplaySpaces(conn) as? [[String : Any]],
             let mainDisplay = NSScreen.main,
             let screenNumber = mainDisplay.deviceDescription[nskey] as? UInt32
-        else { return SpaceInfo(keyboardFocusSpace: nil, activeSpaces: [], allSpaces: []) }
-        
+        else { return SpaceInfo(keyboardFocusSpace: nil, activeSpaces: [], allSpaces: [], monitorSpaces: []) }
+        /* reverse sort monitors becasue my monitors are reversed left to right */
+        //let monitors = Array(monitors2.reversed())
         let cfuuid = CGDisplayCreateUUIDFromDisplayID(screenNumber).takeRetainedValue()
         let screenUUID = CFUUIDCreateString(kCFAllocatorDefault, cfuuid) as String
-        let (activeSpaces, allSpaces) = parseSpaces(monitors: monitors)
+        let (activeSpaces, allSpaces, monitorSpaces) = parseSpaces(monitors: monitors)
 
         return SpaceInfo(keyboardFocusSpace: activeSpaces[screenUUID],
                          activeSpaces: activeSpaces.map{ $0.value },
-                         allSpaces: allSpaces)
+                         allSpaces: allSpaces, monitorSpaces: monitorSpaces)
     }
     
     /* returns a mapping of screen uuids and their active space */
-    private func parseSpaces(monitors: [[String : Any]]) -> ([ScreenUUID : Space], [Space]) {
+    private func parseSpaces(monitors: [[String : Any]]) -> ([ScreenUUID : Space], [Space], [Int]) {
         var activeSpaces: [ScreenUUID : Space] = [:]
         var allSpaces: [Space] = []
         var spaceCount = 0
+        var monitorSpaces = [Int]()
         var counter = 1
         var order = 0
         for m in monitors {
@@ -56,11 +58,14 @@ class SpaceIdentifier {
                                                     number: number,
                                                     order: order,
                                                     isActive: true)
-            spaceCount += spaces.count
+            spaceCount += allSpaces.count - 1
+            monitorSpaces.append(spaceCount)
+            spaceCount = 0
+
             counter += filterFullscreen.count
             order += 1
         }
-        return (activeSpaces, allSpaces)
+        return (activeSpaces, allSpaces, monitorSpaces)
     }
     
     private func parseSpaceList(spaces: [[String : Any]], startIndex: Int, activeUUID: String) -> [Space] {
@@ -86,6 +91,19 @@ class SpaceIdentifier {
                 counter += 1
             }
         }
+        /* add one fake space for each display as a visual spacer */
+        let id64 = 999
+        let uuid = "A71FE2F9-DED2-45C5-A58A-5D78429EDCC3"
+        let managedSpaceId = 10000
+        let number = 99
+        ret.append(
+            Space(id64: id64,
+                  uuid: uuid,
+                  type: 99,
+                  managedSpaceId: managedSpaceId,
+                  number: number,
+                  order: 0,
+                  isActive: uuid == activeUUID))
         return ret
     }
 }

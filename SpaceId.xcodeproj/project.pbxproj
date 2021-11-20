@@ -200,7 +200,6 @@
 				TargetAttributes = {
 					19A7AC781E44D493004FBE39 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = VBQ33APC27;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
@@ -422,6 +421,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dshnkao.SpaceId;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SpaceId/SpaceId-Bridging-Header.h";
@@ -437,13 +437,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = VBQ33APC27;
+				DEVELOPMENT_TEAM = 8T2AW9G8ZJ;
 				INFOPLIST_FILE = SpaceId/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dshnkao.SpaceId;
+				MARKETING_VERSION = 1.4.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dpurnellio.SpaceId;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "SpaceId/SpaceId-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
