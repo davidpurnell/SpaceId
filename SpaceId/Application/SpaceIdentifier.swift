@@ -34,7 +34,13 @@ class SpaceIdentifier {
         var monitorSpaces = [Int]()
         var counter = 1
         var order = 0
-        for m in monitors {
+        // swapping the position of display 1 & 2 because they are out of order in Mission Control
+        // This currently messes up accurate space number across monitors.
+        // (significant code changes required to rectify this)
+        var mmonitors = monitors
+        mmonitors.swapAt(0,1)
+        //
+        for m in mmonitors {
             guard let current = m["Current Space"] as? [String : Any],
                   let spaces = m["Spaces"] as? [[String : Any]],
                   let displayIdentifier = m["Display Identifier"] as? String
